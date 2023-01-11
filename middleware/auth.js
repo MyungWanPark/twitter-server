@@ -17,6 +17,7 @@ export const isAuth = async (req, res, next) => {
   if (!token) {
     return res.status(401).json(AUTH_ERROR);
   }
+
   jwt.verify(token, config.jwt.secretKey, async (error, decoded) => {
     if (error) {
       return res.status(401).json(AUTH_ERROR);
