@@ -31,4 +31,8 @@ export const config = {
   csrf: {
     plainToken: required('CSRF_SECRET_KEY'),
   },
+  rateLimit: {
+    windowMS: required('RATE_LIMIT_WINDOW_MS'),
+    maxRequest: required('MAX_REQUEST'),
+  },
 };
