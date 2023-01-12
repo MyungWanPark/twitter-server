@@ -4,6 +4,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import yaml from 'yamljs';
+import swaggerUI from 'swagger-ui-express';
 import tweetsRouter from './router/tweets.js';
 import authRouter from './router/auth.js';
 import { config } from './config.js';
@@ -19,6 +21,7 @@ const corsOption = {
   optionsSuccessStatus: 200,
   credentials: true,
 };
+const openAPIDocument = yaml.load('./api/openapi.yaml');
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOption));
@@ -27,6 +30,7 @@ app.use(morgan('tiny'));
 app.use(rateLimiter);
 
 app.use(csrfCheck);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(openAPIDocument));
 app.use('/tweets', tweetsRouter);
 app.use('/auth', authRouter);
 app.use((req, res, next) => {
