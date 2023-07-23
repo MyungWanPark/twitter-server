@@ -1,17 +1,17 @@
-import jwt from 'jsonwebtoken';
-import { config } from '../config.js';
-import * as userRepository from '../data/userRepository.js';
+import jwt from "jsonwebtoken";
+import { config } from "../config.js";
+import * as userRepository from "../data/userRepository.js";
 
-const AUTH_ERROR = { message: 'Authenication Error' };
+const AUTH_ERROR = { message: "Authenication Error" };
 
 export const isAuth = async (req, res, next) => {
   let token;
-  const authHeader = req.get('Authorization');
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    token = authHeader.split(' ')[1];
+  const authHeader = req.get("Authorization");
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    token = authHeader.split(" ")[1];
   }
   if (!token) {
-    token = req.cookies['token'];
+    token = req.cookies["token"];
   }
 
   if (!token) {
@@ -22,7 +22,7 @@ export const isAuth = async (req, res, next) => {
     if (error) {
       return res.status(401).json(AUTH_ERROR);
     }
-    const user = userRepository.findById(decoded.id);
+    const user = await userRepository.findById(decoded.id);
     if (!user) {
       return res.status(401).json(AUTH_ERROR);
     }
